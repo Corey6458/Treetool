@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michigan Tree Health — Field Key</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDE7D8;
+    --paper-card:#F6F2E7;
+    --ink:#26241D;
+    --ink-soft:#5B584B;
+    --forest:#33503B;
+    --forest-dark:#22342A;
+    --forest-tint:#E1E8DE;
+    --rust:#A8462E;
+    --rust-tint:#F3E0D9;
+    --gold:#A9791F;
+    --gold-tint:#F2E7CE;
+    --line:#C9BFA0;
+    --line-soft:#DAD3BC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:36px 28px 80px;
+  }
+  header.top{
+    border-bottom:2px solid var(--ink);
+    padding-bottom:22px;
+    margin-bottom:28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .stamp{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--forest);
+    border:1.5px solid var(--forest);
+    padding:3px 9px;
+    border-radius:2px;
+    transform:rotate(-1.5deg);
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Zilla Slab', serif;
+    font-weight:700;
+    font-size:38px;
+    line-height:1.05;
+    margin:0 0 6px;
+    letter-spacing:-.01em;
+  }
+  h1 span{color:var(--forest);}
+  .top p.sub{
+    margin:0;
+    max-width:520px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    line-height:1.55;
+  }
+  .top-right{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:right;
+    line-height:1.7;
+    border-left:1.5px solid var(--line);
+    padding-left:18px;
+  }
+  .top-right b{color:var(--ink);}
+
+  .layout{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:30px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:20px 20px 22px;
+    position:sticky;
+    top:20px;
+  }
+  @media (max-width:860px){ .panel{position:static;} }
+
+  .panel h2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--forest);
+    margin:22px 0 10px;
+    padding-top:14px;
+    border-top:1px solid var(--line-soft);
+  }
+  .panel h2.first{margin-top:0;padding-top:0;border-top:none;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{
+    font-size:13px;
+    font-family:'Public Sans', sans-serif;
+    font-weight:500;
+    padding:6px 11px;
+    border:1.3px solid var(--line);
+    border-radius:20px;
+    cursor:pointer;
+    user-select:none;
+    background:transparent;
+    color:var(--ink);
+    transition:background .12s, border-color .12s, color .12s;
+  }
+  .chip:hover{border-color:var(--forest);}
+  .chip.active{
+    background:var(--forest);
+    border-color:var(--forest);
+    color:#F6F2E7;
+  }
+
+  .clear-btn{
+    margin-top:20px;
+    width:100%;
+    background:transparent;
+    border:1.3px solid var(--ink);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:9px 0;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .clear-btn:hover{background:var(--ink);color:var(--paper-card);}
+
+  .count-line{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  .results{min-height:200px;}
+  .results-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .results-head h2{
+    font-family:'Zilla Slab', serif;
+    font-size:20px;
+    font-weight:600;
+    margin:0;
+  }
+  .results-head .n{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  .empty-state{
+    border:1.5px dashed var(--line);
+    border-radius:3px;
+    padding:40px 24px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:14.5px;
+    line-height:1.6;
+  }
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media (max-width:700px){ .card-grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:18px 18px 16px;
+    position:relative;
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .card-id{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+    letter-spacing:.06em;
+  }
+  .match-badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--forest);
+    border:1.3px solid var(--forest);
+    border-radius:20px;
+    padding:2px 9px;
+    white-space:nowrap;
+  }
+  .card h3{
+    font-family:'Zilla Slab', serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0 0 3px;
+    line-height:1.15;
+  }
+  .card .latin{
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    margin:0 0 10px;
+  }
+  .card .hosts{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .card .hosts b{color:var(--ink);font-weight:600;}
+  .card p.symptoms{
+    font-size:13.5px;
+    line-height:1.55;
+    margin:0 0 10px;
+  }
+  .tagrow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:12px;
+  }
+  .tag-stamp{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    padding:2px 7px;
+    border-radius:2px;
+    background:var(--forest-tint);
+    color:var(--forest-dark);
+    border:1px solid var(--forest);
+    transform:rotate(-1deg);
+  }
+  .action{
+    border-top:1px solid var(--line-soft);
+    padding-top:11px;
+    margin-top:2px;
+    font-size:13px;
+    line-height:1.5;
+  }
+  .action .urgency{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border-radius:2px;
+    margin-bottom:6px;
+  }
+  .urgency.wif{background:var(--forest-tint);color:var(--forest);}
+  .urgency.wsa{background:var(--gold-tint);color:var(--gold);}
+  .urgency.win{background:var(--rust-tint);color:var(--rust);}
+  .urgency.wim{background:var(--forest-tint);color:var(--forest);}
+  .urgency.none{background:var(--line-soft);color:var(--ink-soft);}
+  .urgency.care{background:var(--gold-tint);color:var(--gold);}
+
+  .photo-link{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--forest);
+    text-decoration:none;
+    border-bottom:1px solid var(--forest);
+    padding-bottom:1px;
+  }
+  .photo-link:hover{color:var(--forest-dark);border-color:var(--forest-dark);}
+
+  details.lookalike{margin-top:8px;}
+  details.lookalike summary{
+    cursor:pointer;
+    font-size:12px;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  details.lookalike div{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    line-height:1.5;
+  }
+
+  footer.note{
+    margin-top:40px;
+    padding-top:18px;
+    border-top:1.5px solid var(--ink);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <span class="stamp">Field training aid</span>
+      <h1>Michigan tree health<br><span>field key</span></h1>
+      <p class="sub">Tap what you're seeing in the field. The key narrows down likely causes so you can flag it correctly and know whether it can wait for the next visit or needs a call today.</p>
+    </div>
+    <div class="top-right">
+      Coverage: <b>14 issues</b><br>
+      Region: <b>Lower &amp; Upper Michigan</b><br>
+      Use: <b>Screening only — confirm before treating</b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="panel">
+      <h2 class="first">Where on the tree</h2>
+      <div class="chips" data-group="part">
+        <div class="chip" data-tag="needles">Needles</div>
+        <div class="chip" data-tag="leaves">Leaves</div>
+        <div class="chip" data-tag="bark-trunk">Bark / trunk</div>
+        <div class="chip" data-tag="shoots-twigs">Shoot / twig tips</div>
+        <div class="chip" data-tag="whole-canopy">Whole canopy</div>
+        <div class="chip" data-tag="roots-base">Roots / base</div>
+      </div>
+
+      <h2>What it looks like</h2>
+      <div class="chips" data-group="look">
+        <div class="chip" data-tag="spots-lesions">Spots or lesions</div>
+        <div class="chip" data-tag="yellowing">Yellowing between veins</div>
+        <div class="chip" data-tag="browning">Browning / scorch</div>
+        <div class="chip" data-tag="wilting">Wilting or drooping</div>
+        <div class="chip" data-tag="defoliation">Early leaf drop</div>
+        <div class="chip" data-tag="vascular-streaking">Streaking under bark</div>
+        <div class="chip" data-tag="cankers">Cankers / sunken bark</div>
+        <div class="chip" data-tag="exit-holes">Small holes in bark</div>
+        <div class="chip" data-tag="webbing-stippling">Webbing or speckled, dusty-looking leaves</div>
+        <div class="chip" data-tag="shepherds-crook">Shoot tip curls into a hook and blackens</div>
+        <div class="chip" data-tag="resin-sap">Resin / sap flow</div>
+      </div>
+
+      <h2>When you're seeing it</h2>
+      <div class="chips" data-group="season">
+        <div class="chip" data-tag="spring">Spring</div>
+        <div class="chip" data-tag="summer">Summer</div>
+        <div class="chip" data-tag="fall">Fall</div>
+        <div class="chip" data-tag="late-winter">Late winter</div>
+      </div>
+
+      <h2>Tree species (if known)</h2>
+      <div class="chips" data-group="host">
+        <div class="chip" data-tag="host-spruce">Spruce</div>
+        <div class="chip" data-tag="host-pine">Pine</div>
+        <div class="chip" data-tag="host-oak">Oak</div>
+        <div class="chip" data-tag="host-elm">Elm</div>
+        <div class="chip" data-tag="host-ash">Ash</div>
+        <div class="chip" data-tag="host-maple">Maple</div>
+        <div class="chip" data-tag="host-birch">Birch</div>
+        <div class="chip" data-tag="host-crabapple">Crabapple / apple</div>
+        <div class="chip" data-tag="host-evergreen">Other evergreen</div>
+      </div>
+
+      <button class="clear-btn" id="clearBtn">Clear all</button>
+      <div class="count-line" id="countLine">0 symptoms selected</div>
+    </div>
+
+    <div class="results">
+      <div class="results-head">
+        <h2>Likely matches</h2>
+        <span class="n" id="resultCount">14 issues</span>
+      </div>
+      <div id="resultsBody"></div>
+    </div>
+  </div>
+
+  <footer class="note">
+    This key is a screening tool for narrowing down field observations — it does not replace lab confirmation or a certified arborist's diagnosis. Oak wilt, Dutch elm disease, and boring insects are time-sensitive in Michigan: when in doubt, photograph the symptom, note the address, and escalate the same day rather than waiting for the next scheduled visit.
+  </footer>
+
+</div>
+
+<script>
+const ISSUES = [
+  {
+    id:"01", name:"Needlecast", latin:"Rhizosphaera / Diplodia spp.",
+    hosts:"Blue spruce, white spruce",
+    symptoms:"Inner and lower needles turn purple-brown and drop first, progressing outward toward the tips over one to two seasons. Small black fruiting bodies may be visible on shed needles with a hand lens.",
+    tags:["needles","browning","defoliation","summer","fall","host-spruce"],
+    lookalike:"Distinguish from drought stress by checking whether browning starts on interior needles rather than uniformly across the tree.",
+    urgency:"wif", treatment:"Recommend WIF (Anytime)", action:"Document and monitor. Recommend removing fallen needles and improving air circulation; fungicide timing is bud-break dependent, so flag for the spray schedule rather than treating on the spot.",
+    photo:"https://apps.extension.umn.edu/garden/diagnose/plant/evergreen/spruce/needlesdiscolored.html"
+  },
+  {
+    id:"02", name:"Oak wilt", latin:"Bretziella fagacearum",
+    hosts:"Red oak group hardest hit; white oaks more resistant",
+    symptoms:"Leaves wilt and bronze from the outer edge inward, often starting at the top of the canopy and progressing rapidly over just a few weeks. Cutting into a symptomatic branch may reveal brown-black streaking under the bark.",
+    tags:["leaves","whole-canopy","wilting","browning","vascular-streaking","summer","host-oak"],
+    lookalike:"Unlike ordinary summer leaf scorch, oak wilt progresses fast — a full crown can go from green to bare in one season — and moves red oak to red oak through root grafts.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Escalate same day. Do not prune the tree or nearby oaks. Notify your supervisor so root-graft isolation and lab sampling can be scheduled — Michigan restricts oak pruning April through July for this reason.",
+    photo:"https://www.canr.msu.edu/news/understanding_oak_wilt"
+  },
+  {
+    id:"03", name:"Leaf spot", latin:"Septoria / Marssonina spp.",
+    hosts:"Maple, ash, poplar, many hardwoods",
+    symptoms:"Dark brown to black spots with a yellow halo appear scattered across leaves, often merging into larger blotches. Lower, older leaves drop first after a wet spring.",
+    tags:["leaves","spots-lesions","yellowing","defoliation","spring","summer","host-maple","host-ash"],
+    lookalike:"Compare with anthracnose — leaf spot lesions stay round and scattered, while anthracnose blotches tend to follow the leaf veins.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Photograph and log. Rake and remove fallen leaves in autumn to cut back next year's spore load; no same-day treatment needed for isolated cases.",
+    photo:"https://www.canr.msu.edu/news/why_do_my_maple_leaves_have_spots/"
+  },
+  {
+    id:"04", name:"Tip blight", latin:"Sphaeropsis (Diplodia) sapinea",
+    hosts:"Austrian pine, red pine, Scots pine",
+    symptoms:"New candle growth browns and stunts at the shoot tips, often with visible resin beads. Older trees show progressive dieback from the lower branches upward over several years.",
+    tags:["shoots-twigs","browning","resin-sap","spring","summer","host-pine"],
+    lookalike:"Distinguish from winter injury by resin flow at the base of the dead tip — winter injury browns without resin.",
+    urgency:"wif", treatment:"Recommend WIF (Anytime)", action:"Document with photos and note which branches are affected. Sanitation pruning in dry weather is the standard follow-up; not urgent for a single visit.",
+    photo:"https://www.canr.msu.edu/ipm/uploads/files/WoodyLandscape_PDFs/SphaeropsisTipBlight_Diplodia.pdf"
+  },
+  {
+    id:"05", name:"Dutch elm disease", latin:"Ophiostoma novo-ulmi",
+    hosts:"American elm and other susceptible elms",
+    symptoms:"One or more branches show sudden wilting and yellowing that turns brown, known as flagging, usually starting in the upper crown. Peeling bark on a wilted branch often reveals brown streaks in the outer wood.",
+    tags:["leaves","whole-canopy","wilting","yellowing","vascular-streaking","summer","host-elm"],
+    lookalike:"A single flagging branch on an otherwise healthy elm is the classic early sign — don't wait for the whole tree to decline before reporting.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Escalate same day. Notify your supervisor for sampling; nearby elms may share root grafts and need to be checked. Do not prune the affected branch without guidance.",
+    photo:"https://www.canr.msu.edu/resources/dutch_elm_disease"
+  },
+  {
+    id:"06", name:"Boring insects", latin:"Emerald ash borer, bronze birch borer, and similar",
+    hosts:"Ash (EAB), birch, and other stressed hardwoods",
+    symptoms:"D-shaped or round exit holes appear in the bark, often with vertical bark splits, increased woodpecker flecking, and epicormic sprouts near the base. Canopy thinning progresses from the top down over one to three years.",
+    tags:["bark-trunk","whole-canopy","exit-holes","browning","summer","host-ash","host-birch"],
+    lookalike:"Check exit hole shape closely — D-shaped holes point to emerald ash borer specifically, which is a regulated pest in Michigan.",
+    urgency:"win", treatment:"Recommend WIN (Anytime)", action:"Escalate same day, especially on ash. Photograph the exit holes and bark damage, note the species and location, and do not transport any removed wood off-site.",
+    photo:"https://www.canr.msu.edu/resources/signs_and_symptoms_of_the_emerald_ash_borer_e29381"
+  },
+  {
+    id:"07", name:"Chlorosis", latin:"Iron or manganese deficiency",
+    hosts:"Pin oak, red maple, river birch in high-pH soils",
+    symptoms:"Leaves turn yellow between the veins while the veins themselves stay green, usually starting on newer growth at the branch tips. Left uncorrected, leaf margins can scorch brown by late summer.",
+    tags:["leaves","yellowing","spring","summer","host-oak","host-maple"],
+    lookalike:"Distinguish from general nitrogen deficiency, which yellows the whole leaf including the veins rather than leaving them green.",
+    urgency:"wim", treatment:"Recommend WIM (Spring)", action:"Document and note soil conditions if known. Typically addressed with a soil pH test and micronutrient treatment on a standard schedule, not a same-day fix.",
+    photo:"https://www.canr.msu.edu/resources/chlorosis"
+  },
+  {
+    id:"08", name:"Anthracnose", latin:"Discula / Apiognomonia / Colletotrichum spp.",
+    hosts:"Sycamore, ash, oak, maple, dogwood",
+    symptoms:"Irregular brown blotches follow the leaf veins, sometimes causing distorted or curled growth, with twig cankers on new shoots after a cool wet spring. Heavy infections can cause a second flush of leaves by early summer.",
+    tags:["leaves","spots-lesions","defoliation","cankers","spring","host-maple","host-oak","host-ash"],
+    lookalike:"On sycamore especially, anthracnose can be mistaken for late frost damage — check for the vein-following blotch pattern to tell them apart.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Document and monitor for twig cankers. Rarely fatal on established trees; recommend sanitation pruning of cankered twigs during dormancy.",
+    photo:"https://www.canr.msu.edu/news/maple_anthracnose"
+  },
+  {
+    id:"09", name:"Apple scab", latin:"Venturia inaequalis",
+    hosts:"Crabapple, apple",
+    symptoms:"Olive-green to black velvety spots develop on leaves and fruit, causing yellowing and early leaf drop through spring and summer in wet years. Heavily infected trees can look half-defoliated by midsummer.",
+    tags:["leaves","spots-lesions","defoliation","spring","summer","host-crabapple"],
+    lookalike:"Distinguish from ordinary leaf spot by host — apple scab is essentially specific to crabapple and apple.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Photograph and log the cultivar. Recommend resistant cultivar notes for future plantings; current-season treatment is preventive fungicide, timed for next spring.",
+    photo:"https://www.canr.msu.edu/resources/apple_scab"
+  },
+  {
+    id:"10", name:"Fire blight", latin:"Erwinia amylovora",
+    hosts:"Crabapple, pear, hawthorn, serviceberry",
+    symptoms:"Blossoms and shoot tips blacken and die, curling into a distinctive hook shape often called a shepherd's crook. Sunken, discolored cankers may ooze on branches below the dead tips.",
+    tags:["shoots-twigs","shepherds-crook","browning","cankers","spring","host-crabapple"],
+    lookalike:"The hooked, blackened shoot tip is fairly distinctive — frost damage browns growth without the crook shape.",
+    urgency:"none", treatment:"No Treatment Available", action:"Flag for prompt attention. Prune out infected wood well below visible symptoms during dry weather only, sanitizing tools between cuts to avoid spreading it further.",
+    photo:"https://www.canr.msu.edu/news/managing_fire_blight_on_ornamentals"
+  },
+  {
+    id:"11", name:"Verticillium wilt", latin:"Verticillium dahliae",
+    hosts:"Maple (especially), redbud, smoke tree",
+    symptoms:"Individual branches wilt and die on just one side of the canopy while the rest of the tree looks normal, usually appearing during summer heat stress. Peeling bark on an affected branch can show streaking in the outer sapwood.",
+    tags:["whole-canopy","wilting","vascular-streaking","summer","host-maple","host-elm"],
+    lookalike:"The one-sided pattern is the key tell — oak wilt and Dutch elm disease affect different host species and tend to spread through more of the crown.",
+    urgency:"none", treatment:"No Treatment Available", action:"Document which branches are affected and the host species. No cure once systemic; recommend removing dead wood and monitoring tree stress rather than same-day escalation.",
+    photo:"https://www.canr.msu.edu/news/verticillium_wilt_refresher"
+  },
+  {
+    id:"12", name:"Spider mites", latin:"Tetranychidae (various species)",
+    hosts:"Spruce, arborvitae, many ornamentals",
+    symptoms:"Foliage develops a fine stippled, bronzed, or dusty appearance, sometimes with faint webbing between needles or leaves during hot, dry summer stretches. A white sheet of paper tapped under a branch will show tiny moving specks.",
+    tags:["leaves","webbing-stippling","browning","summer","host-spruce","host-evergreen"],
+    lookalike:"Confirm with the paper-tap test before assuming needlecast — mite damage looks similar from a distance but the insects are visible up close.",
+    urgency:"care", treatment:"Recommend Tree & Shrubs Care", action:"Document and note weather conditions. A strong water spray or miticide on the standard treatment schedule usually resolves it; not urgent.",
+    photo:"https://www.canr.msu.edu/resources/spruce_spider_mite"
+  },
+  {
+    id:"13", name:"Winter injury", latin:"Environmental desiccation",
+    hosts:"Evergreens and broadleaf evergreens, especially wind-exposed plantings",
+    symptoms:"Needles or leaves brown at the tips or margins, often worse on the side of the tree facing prevailing winter wind, becoming visible as snow melts in late winter. New growth later in spring is usually unaffected.",
+    tags:["needles","leaves","browning","late-winter","host-evergreen","host-spruce","host-pine"],
+    lookalike:"The one-sided, wind-facing pattern and lack of resin or fungal fruiting bodies separate this from tip blight or needlecast.",
+    urgency:"care", treatment:"Recommend Tree & Shrub Care", action:"Document and monitor new spring growth before recommending any pruning — winter injury often resolves on its own once the tree leafs out.",
+    photo:"https://www.canr.msu.edu/news/winter_tree_and_shrub_injury_what_are_the_signs"
+  },
+  {
+    id:"14", name:"Girdling roots / root decline", latin:"Structural root issue",
+    hosts:"Any species, common on trees planted too deep",
+    symptoms:"The canopy thins gradually with pale or undersized leaves and slowed growth over several seasons, without a clear trunk or foliage lesion. Checking the base often shows a missing root flare or a root visibly circling the trunk.",
+    tags:["roots-base","whole-canopy","yellowing","spring","summer","host-maple","host-oak"],
+    lookalike:"Rule out chlorosis first by checking the trunk base for a visible root flare — if the trunk goes straight into the ground like a pole, suspect girdling roots.",
+    urgency:"none", treatment:"No Treatment available", action:"Document root flare condition with a photo. Recommend root collar excavation to confirm; not an emergency but worth flagging before the decline advances further.",
+    photo:"https://extension.umd.edu/resource/girdling-roots"
+  }
+];
+
+let selected = new Set();
+
+function render(){
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.classList.toggle('active', selected.has(c.dataset.tag));
+  });
+  document.getElementById('countLine').textContent =
+    selected.size + (selected.size===1 ? ' symptom selected' : ' symptoms selected');
+
+  const body = document.getElementById('resultsBody');
+  const head = document.getElementById('resultCount');
+
+  if(selected.size===0){
+    body.innerHTML = '<div class="empty-state">Select a symptom on the left to start narrowing down the list. The more you select, the tighter the match.</div>';
+    head.textContent = ISSUES.length + ' issues';
+    return;
+  }
+
+  const scored = ISSUES.map(iss=>{
+    const matched = iss.tags.filter(t=>selected.has(t));
+    return {iss, score:matched.length, matched};
+  }).filter(x=>x.score>0)
+    .sort((a,b)=> b.score/b.iss.tags.length - a.score/a.iss.tags.length || b.score - a.score);
+
+  head.textContent = scored.length + (scored.length===1 ? ' match' : ' matches');
+
+  if(scored.length===0){
+    body.innerHTML = '<div class="empty-state">No issues match that exact combination. Try clearing a symptom or two — some signs (like season) narrow things down fast.</div>';
+    return;
+  }
+
+
+
+  body.innerHTML = '<div class="card-grid">' + scored.map(({iss,matched})=>`
+    <div class="card">
+      <div class="card-top">
+        <span class="card-id">FIELD KEY #${iss.id}</span>
+        <span class="match-badge">${matched.length}/${iss.tags.length} matched</span>
+      </div>
+      <h3>${iss.name}</h3>
+      <p class="latin">${iss.latin}</p>
+      <p class="hosts"><b>Common hosts:</b> ${iss.hosts}</p>
+      <p class="symptoms">${iss.symptoms}</p>
+      <div class="tagrow">${matched.map(t=>`<span class="tag-stamp">${t.replace(/-/g,' ')}</span>`).join('')}</div>
+      <div class="action">
+        <span class="urgency ${iss.urgency}">${iss.treatment}</span><br>
+        ${iss.action}
+      </div>
+      <details class="lookalike">
+        <summary>Look-alike check</summary>
+        <div>${iss.lookalike}</div>
+      </details>
+      <div><a class="photo-link" href="${iss.photo}" target="_blank" rel="noopener">View reference photos ↗</a></div>
+    </div>
+  `).join('') + '</div>';
+}
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    const tag = chip.dataset.tag;
+    if(selected.has(tag)) selected.delete(tag); else selected.add(tag);
+    render();
+  });
+});
+
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  selected.clear();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
