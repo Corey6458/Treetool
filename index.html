@@ -311,6 +311,180 @@
   }
   .photo-link:hover{color:var(--forest-dark);border-color:var(--forest-dark);}
 
+  .price-calc{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+  }
+  .price-calc label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .price-calc-row{display:flex;gap:8px;align-items:center;}
+  .price-calc-row input{
+    width:90px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    padding:5px 7px;
+    border:1.3px solid var(--line);
+    border-radius:2px;
+    background:#fff;
+  }
+  .price-output{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--forest);
+    line-height:1.4;
+  }
+  .price-note{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+    font-size:12.5px;
+    color:var(--gold);
+    font-weight:500;
+  }
+
+  .tabbar{display:flex;gap:10px;margin-bottom:24px;}
+  .tab-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:9px 18px;
+    border:1.3px solid var(--ink);
+    border-radius:20px;
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .tab-btn.active{background:var(--ink);color:var(--paper-card);}
+  .tab-view{display:none;}
+  .tab-view.active{display:block;}
+
+  .pricing-layout{
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:24px;
+    align-items:start;
+  }
+  @media (max-width:860px){ .pricing-layout{grid-template-columns:1fr;} }
+
+  .price-group{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .group-title{
+    font-family:'Zilla Slab', serif;
+    font-size:17px;
+    font-weight:600;
+    margin:0 0 12px;
+  }
+  .group-sub{
+    font-family:'Public Sans', sans-serif;
+    font-weight:400;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  .price-row{
+    display:grid;
+    grid-template-columns:1fr 100px 170px;
+    gap:10px;
+    align-items:center;
+    padding:9px 0;
+    border-top:1px solid var(--line-soft);
+  }
+  .price-row:first-of-type{border-top:none;}
+  .price-row label{font-size:13px;}
+  .price-row input{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    padding:6px 8px;
+    border:1.3px solid var(--line);
+    border-radius:2px;
+    background:#fff;
+    width:100%;
+  }
+  .row-result{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--forest);
+    text-align:right;
+  }
+  @media (max-width:600px){
+    .price-row{grid-template-columns:1fr;}
+    .row-result{text-align:left;}
+  }
+
+  .care-group{background:var(--gold-tint);border-color:var(--gold);}
+  .care-check{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    font-size:13.5px;
+    font-weight:500;
+    margin-bottom:6px;
+    cursor:pointer;
+  }
+  .care-text{font-size:12.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+
+  .price-summary{
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:18px 20px;
+    position:sticky;
+    top:20px;
+  }
+  .summary-lines{font-family:'IBM Plex Mono', monospace;font-size:12.5px;}
+  .summary-line{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--line-soft);
+  }
+  .summary-line.stop{color:var(--gold);}
+  .summary-line.total{
+    border-top:2px solid var(--ink);
+    border-bottom:none;
+    margin-top:8px;
+    padding-top:10px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .summary-line.care-note{
+    color:var(--gold);
+    border-bottom:none;
+    font-family:'Public Sans', sans-serif;
+    font-size:12px;
+    margin-top:10px;
+    display:block;
+  }
+  .summary-clear{
+    margin-top:16px;
+    width:100%;
+    background:transparent;
+    border:1.3px solid var(--ink);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:9px 0;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .summary-clear:hover{background:var(--ink);color:var(--paper-card);}
+
   details.lookalike{margin-top:8px;}
   details.lookalike summary{
     cursor:pointer;
@@ -351,6 +525,12 @@
     </div>
   </header>
 
+  <div class="tabbar">
+    <button class="tab-btn active" data-tab="fieldkey">Field key</button>
+    <button class="tab-btn" data-tab="pricing">Price calculator</button>
+  </div>
+
+  <div id="view-fieldkey" class="tab-view active">
   <div class="layout">
     <div class="panel">
       <h2 class="first">Where on the tree</h2>
@@ -416,6 +596,104 @@
   <footer class="note">
     This key is a screening tool for narrowing down field observations — it does not replace lab confirmation or a certified arborist's diagnosis. Oak wilt, Dutch elm disease, and boring insects are time-sensitive in Michigan: when in doubt, photograph the symptom, note the address, and escalate the same day rather than waiting for the next scheduled visit.
   </footer>
+  </div>
+
+  <div id="view-pricing" class="tab-view">
+    <div class="pricing-layout">
+      <div class="pricing-groups">
+
+        <div class="price-group">
+          <h2 class="group-title">WIF <span class="group-sub">— Needlecast &amp; Tip Blight · $15.50/injection · every 4 in of circumference</span></h2>
+          <div class="price-row" data-program="wif" data-rate="15.50" data-spacing="4" data-label="Needlecast">
+            <label>Needlecast — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wif" data-rate="15.50" data-spacing="4" data-label="Tip blight">
+            <label>Tip blight — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+        </div>
+
+        <div class="price-group">
+          <h2 class="group-title">WIN <span class="group-sub">— boring insects · $8.00/injection · every 5 in of circumference</span></h2>
+          <div class="price-row" data-program="win" data-rate="8.00" data-spacing="5" data-label="Boring insects">
+            <label>Boring insects — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+        </div>
+
+        <div class="price-group">
+          <h2 class="group-title">WSA <span class="group-sub">— every 4 in of circumference</span></h2>
+          <div class="price-row" data-program="wsa" data-rate="11.75" data-spacing="4" data-label="Anthracnose">
+            <label>Anthracnose ($11.75/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wsa" data-rate="19.50" data-spacing="4" data-label="Oak wilt">
+            <label>Oak wilt ($19.50/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wsa" data-rate="31.00" data-spacing="4" data-label="Dutch elm">
+            <label>Dutch elm ($31.00/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wsa" data-rate="11.75" data-spacing="4" data-label="Apple scab">
+            <label>Apple scab ($11.75/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wsa" data-rate="11.75" data-spacing="4" data-label="Rust">
+            <label>Rust ($11.75/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wsa" data-rate="11.75" data-spacing="4" data-label="Leaf spot">
+            <label>Leaf spot ($11.75/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+          <div class="price-row" data-program="wsa" data-rate="11.75" data-spacing="4" data-label="Powdery mildew">
+            <label>Powdery mildew ($11.75/injection) — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+        </div>
+
+        <div class="price-group">
+          <h2 class="group-title">WIM <span class="group-sub">— Chlorosis · $8.00/injection · every 5 in of circumference</span></h2>
+          <div class="price-row" data-program="wim" data-rate="8.00" data-spacing="5" data-label="Chlorosis">
+            <label>Chlorosis — total circumference (in)</label>
+            <input type="number" min="0" step="1" class="qty-input">
+            <span class="row-result">—</span>
+          </div>
+        </div>
+
+        <div class="price-group care-group">
+          <h2 class="group-title">Tree &amp; Shrub Care <span class="group-sub">— topical insects, spider mites, and similar</span></h2>
+          <label class="care-check"><input type="checkbox" id="careCheck"> Customer also needs Tree &amp; Shrub Care</label>
+          <p class="care-text">Pricing depends on lawn square footage — refer to the standard price sheet. Not included in the total.</p>
+        </div>
+
+      </div>
+
+      <div class="price-summary">
+        <h2 class="group-title">Quote summary</h2>
+        <div id="summaryLines" class="summary-lines">
+          <div class="empty-state">Enter a circumference above to build the quote.</div>
+        </div>
+        <button class="summary-clear" id="clearPricing">Clear all</button>
+      </div>
+    </div>
+
+    <footer class="note">
+      Stop charges are billed once per visit, not per tree. WIF and WIN are done in the same visit and share one stop charge; WSA and WIM are done separately and each carry their own. This calculator is for internal quoting on wedge trunk injections only.
+    </footer>
+  </div>
 
 </div>
 
@@ -427,7 +705,7 @@ const ISSUES = [
     symptoms:"Inner and lower needles turn purple-brown and drop first, progressing outward toward the tips over one to two seasons. Small black fruiting bodies may be visible on shed needles with a hand lens.",
     tags:["needles","browning","defoliation","summer","fall","host-spruce"],
     lookalike:"Distinguish from drought stress by checking whether browning starts on interior needles rather than uniformly across the tree.",
-    urgency:"wif", treatment:"Recommend WIF (Anytime)", action:"Document and monitor. Recommend removing fallen needles and improving air circulation; fungicide timing is bud-break dependent, so flag for the spray schedule rather than treating on the spot.",
+    urgency:"wif", treatment:"Recommend WIF (Anytime)", rate:15.50, spacing:4, action:"Document and monitor. Recommend removing fallen needles and improving air circulation; fungicide timing is bud-break dependent, so flag for the spray schedule rather than treating on the spot.",
     photo:"https://apps.extension.umn.edu/garden/diagnose/plant/evergreen/spruce/needlesdiscolored.html"
   },
   {
@@ -436,7 +714,7 @@ const ISSUES = [
     symptoms:"Leaves wilt and bronze from the outer edge inward, often starting at the top of the canopy and progressing rapidly over just a few weeks. Cutting into a symptomatic branch may reveal brown-black streaking under the bark.",
     tags:["leaves","whole-canopy","wilting","browning","vascular-streaking","summer","host-oak"],
     lookalike:"Unlike ordinary summer leaf scorch, oak wilt progresses fast — a full crown can go from green to bare in one season — and moves red oak to red oak through root grafts.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Escalate same day. Do not prune the tree or nearby oaks. Notify your supervisor so root-graft isolation and lab sampling can be scheduled — Michigan restricts oak pruning April through July for this reason.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:19.50, spacing:4, action:"Escalate same day. Do not prune the tree or nearby oaks. Notify your supervisor so root-graft isolation and lab sampling can be scheduled — Michigan restricts oak pruning April through July for this reason.",
     photo:"https://www.canr.msu.edu/news/understanding_oak_wilt"
   },
   {
@@ -445,7 +723,7 @@ const ISSUES = [
     symptoms:"Dark brown to black spots with a yellow halo appear scattered across leaves, often merging into larger blotches. Lower, older leaves drop first after a wet spring.",
     tags:["leaves","spots-lesions","yellowing","defoliation","spring","summer","host-maple","host-ash"],
     lookalike:"Compare with anthracnose — leaf spot lesions stay round and scattered, while anthracnose blotches tend to follow the leaf veins.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Photograph and log. Rake and remove fallen leaves in autumn to cut back next year's spore load; no same-day treatment needed for isolated cases.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:11.75, spacing:4, action:"Photograph and log. Rake and remove fallen leaves in autumn to cut back next year's spore load; no same-day treatment needed for isolated cases.",
     photo:"https://www.canr.msu.edu/news/why_do_my_maple_leaves_have_spots/"
   },
   {
@@ -454,7 +732,7 @@ const ISSUES = [
     symptoms:"New candle growth browns and stunts at the shoot tips, often with visible resin beads. Older trees show progressive dieback from the lower branches upward over several years.",
     tags:["shoots-twigs","browning","resin-sap","spring","summer","host-pine"],
     lookalike:"Distinguish from winter injury by resin flow at the base of the dead tip — winter injury browns without resin.",
-    urgency:"wif", treatment:"Recommend WIF (Anytime)", action:"Document with photos and note which branches are affected. Sanitation pruning in dry weather is the standard follow-up; not urgent for a single visit.",
+    urgency:"wif", treatment:"Recommend WIF (Anytime)", rate:15.50, spacing:4, action:"Document with photos and note which branches are affected. Sanitation pruning in dry weather is the standard follow-up; not urgent for a single visit.",
     photo:"https://www.canr.msu.edu/ipm/uploads/files/WoodyLandscape_PDFs/SphaeropsisTipBlight_Diplodia.pdf"
   },
   {
@@ -463,7 +741,7 @@ const ISSUES = [
     symptoms:"One or more branches show sudden wilting and yellowing that turns brown, known as flagging, usually starting in the upper crown. Peeling bark on a wilted branch often reveals brown streaks in the outer wood.",
     tags:["leaves","whole-canopy","wilting","yellowing","vascular-streaking","summer","host-elm"],
     lookalike:"A single flagging branch on an otherwise healthy elm is the classic early sign — don't wait for the whole tree to decline before reporting.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Escalate same day. Notify your supervisor for sampling; nearby elms may share root grafts and need to be checked. Do not prune the affected branch without guidance.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:31.00, spacing:4, action:"Escalate same day. Notify your supervisor for sampling; nearby elms may share root grafts and need to be checked. Do not prune the affected branch without guidance.",
     photo:"https://www.canr.msu.edu/resources/dutch_elm_disease"
   },
   {
@@ -472,7 +750,7 @@ const ISSUES = [
     symptoms:"D-shaped or round exit holes appear in the bark, often with vertical bark splits, increased woodpecker flecking, and epicormic sprouts near the base. Canopy thinning progresses from the top down over one to three years.",
     tags:["bark-trunk","whole-canopy","exit-holes","browning","summer","host-ash","host-birch"],
     lookalike:"Check exit hole shape closely — D-shaped holes point to emerald ash borer specifically, which is a regulated pest in Michigan.",
-    urgency:"win", treatment:"Recommend WIN (Anytime)", action:"Escalate same day, especially on ash. Photograph the exit holes and bark damage, note the species and location, and do not transport any removed wood off-site.",
+    urgency:"win", treatment:"Recommend WIN (Anytime)", rate:8.00, spacing:5, action:"Escalate same day, especially on ash. Photograph the exit holes and bark damage, note the species and location, and do not transport any removed wood off-site.",
     photo:"https://www.canr.msu.edu/resources/signs_and_symptoms_of_the_emerald_ash_borer_e29381"
   },
   {
@@ -481,7 +759,7 @@ const ISSUES = [
     symptoms:"Leaves turn yellow between the veins while the veins themselves stay green, usually starting on newer growth at the branch tips. Left uncorrected, leaf margins can scorch brown by late summer.",
     tags:["leaves","yellowing","spring","summer","host-oak","host-maple"],
     lookalike:"Distinguish from general nitrogen deficiency, which yellows the whole leaf including the veins rather than leaving them green.",
-    urgency:"wim", treatment:"Recommend WIM (Spring)", action:"Document and note soil conditions if known. Typically addressed with a soil pH test and micronutrient treatment on a standard schedule, not a same-day fix.",
+    urgency:"wim", treatment:"Recommend WIM (Spring)", rate:8.00, spacing:5, action:"Document and note soil conditions if known. Typically addressed with a soil pH test and micronutrient treatment on a standard schedule, not a same-day fix.",
     photo:"https://www.canr.msu.edu/resources/chlorosis"
   },
   {
@@ -490,7 +768,7 @@ const ISSUES = [
     symptoms:"Irregular brown blotches follow the leaf veins, sometimes causing distorted or curled growth, with twig cankers on new shoots after a cool wet spring. Heavy infections can cause a second flush of leaves by early summer.",
     tags:["leaves","spots-lesions","defoliation","cankers","spring","host-maple","host-oak","host-ash"],
     lookalike:"On sycamore especially, anthracnose can be mistaken for late frost damage — check for the vein-following blotch pattern to tell them apart.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Document and monitor for twig cankers. Rarely fatal on established trees; recommend sanitation pruning of cankered twigs during dormancy.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:11.75, spacing:4, action:"Document and monitor for twig cankers. Rarely fatal on established trees; recommend sanitation pruning of cankered twigs during dormancy.",
     photo:"https://www.canr.msu.edu/news/maple_anthracnose"
   },
   {
@@ -499,7 +777,7 @@ const ISSUES = [
     symptoms:"Olive-green to black velvety spots develop on leaves and fruit, causing yellowing and early leaf drop through spring and summer in wet years. Heavily infected trees can look half-defoliated by midsummer.",
     tags:["leaves","spots-lesions","defoliation","spring","summer","host-crabapple"],
     lookalike:"Distinguish from ordinary leaf spot by host — apple scab is essentially specific to crabapple and apple.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Photograph and log the cultivar. Recommend resistant cultivar notes for future plantings; current-season treatment is preventive fungicide, timed for next spring.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:11.75, spacing:4, action:"Photograph and log the cultivar. Recommend resistant cultivar notes for future plantings; current-season treatment is preventive fungicide, timed for next spring.",
     photo:"https://www.canr.msu.edu/resources/apple_scab"
   },
   {
@@ -508,7 +786,7 @@ const ISSUES = [
     symptoms:"Bright orange-yellow spots appear on the upper leaf surface in late spring to summer, sometimes with small tube-like structures forming on the leaf underside a few weeks later. On a nearby eastern redcedar or juniper, gelatinous orange horn-like galls appear after spring rains.",
     tags:["leaves","spots-lesions","yellowing","spring","summer","host-crabapple"],
     lookalike:"The bright orange color and a cedar or juniper growing nearby set this apart from ordinary leaf spot, which stays brown to black.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Document and note whether a cedar or juniper is growing nearby, since the disease needs both hosts to complete its cycle. Rarely serious on established trees; treatment timing is tied to spring rain events rather than a same-day fix.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:11.75, spacing:4, action:"Document and note whether a cedar or juniper is growing nearby, since the disease needs both hosts to complete its cycle. Rarely serious on established trees; treatment timing is tied to spring rain events rather than a same-day fix.",
     photo:"https://www.canr.msu.edu/news/cedar_apple_rust_in_eastern_redcedar_trees_attracts_attention_every_spring"
   },
   {
@@ -535,7 +813,7 @@ const ISSUES = [
     symptoms:"A white to gray powdery coating develops on the upper leaf surface, young shoots, and sometimes flower buds, most noticeable in mid to late summer. Heavily coated leaves may look distorted or dusted with flour, though the tree is rarely seriously harmed.",
     tags:["leaves","shoots-twigs","white-coating","summer","host-crabapple"],
     lookalike:"Wipe the leaf to check — powdery mildew won't rub off completely and often leaves a faint white haze behind, unlike dust or spray residue.",
-    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Document which plant is affected; mostly a cosmetic issue on established trees. Recommend improving air circulation and light exposure; treatment is rarely needed except on repeatedly disfigured specimens.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", rate:11.75, spacing:4, action:"Document which plant is affected; mostly a cosmetic issue on established trees. Recommend improving air circulation and light exposure; treatment is rarely needed except on repeatedly disfigured specimens.",
     photo:"https://www.canr.msu.edu/resources/powdery_mildew"
   },
   {
@@ -602,6 +880,14 @@ function render(){
         <div>${iss.lookalike}</div>
       </details>
       <div><a class="photo-link" href="${iss.photo}" target="_blank" rel="noopener">View reference photos ↗</a></div>
+      ${iss.rate ? `
+      <div class="price-calc">
+        <label>Total circumference needing treatment (in)</label>
+        <div class="price-calc-row">
+          <input type="number" min="0" step="1" class="circ-input" data-rate="${iss.rate}" data-spacing="${iss.spacing}" placeholder="e.g. 48">
+          <span class="price-output">—</span>
+        </div>
+      </div>` : iss.urgency==='care' ? `<div class="price-note">Pricing: refer to price sheet — depends on lawn sq ft.</div>` : ''}
     </div>
   `).join('') + '</div>';
 }
@@ -620,6 +906,86 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 });
 
 render();
+
+/* ---- Tabs ---- */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-view').forEach(v=>v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('view-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---- Inline price calculator on Field Key cards (combined flow) ---- */
+document.getElementById('resultsBody').addEventListener('input', e=>{
+  if(!e.target.classList.contains('circ-input')) return;
+  const rate = parseFloat(e.target.dataset.rate);
+  const spacing = parseFloat(e.target.dataset.spacing);
+  const circ = parseFloat(e.target.value);
+  const out = e.target.closest('.price-calc').querySelector('.price-output');
+  if(!circ || circ<=0){ out.textContent = '—'; return; }
+  const injections = Math.ceil(circ/spacing);
+  const price = injections*rate;
+  out.textContent = `${injections} injection${injections===1?'':'s'} × $${rate.toFixed(2)} = $${price.toFixed(2)} (+ $65 stop charge)`;
+});
+
+/* ---- Standalone price calculator tab ---- */
+function calcPricing(){
+  const rows = document.querySelectorAll('#view-pricing .price-row');
+  let subtotal = 0;
+  const lines = [];
+  const activePrograms = new Set();
+
+  rows.forEach(row=>{
+    const input = row.querySelector('.qty-input');
+    const result = row.querySelector('.row-result');
+    const circ = parseFloat(input.value);
+    if(!circ || circ<=0){ result.textContent = '—'; return; }
+    const rate = parseFloat(row.dataset.rate);
+    const spacing = parseFloat(row.dataset.spacing);
+    const program = row.dataset.program;
+    const label = row.dataset.label;
+    const injections = Math.ceil(circ/spacing);
+    const price = injections*rate;
+    result.textContent = `${injections} × $${rate.toFixed(2)} = $${price.toFixed(2)}`;
+    subtotal += price;
+    activePrograms.add(program);
+    lines.push({label, injections, price});
+  });
+
+  let stopTotal = 0;
+  const groupNames = [];
+  if(activePrograms.has('wif') || activePrograms.has('win')){ groupNames.push('WIF/WIN visit'); stopTotal += 65; }
+  if(activePrograms.has('wsa')){ groupNames.push('WSA visit'); stopTotal += 65; }
+  if(activePrograms.has('wim')){ groupNames.push('WIM visit'); stopTotal += 65; }
+  const grandTotal = subtotal + stopTotal;
+
+  const summaryEl = document.getElementById('summaryLines');
+  if(lines.length===0){
+    summaryEl.innerHTML = '<div class="empty-state">Enter a circumference above to build the quote.</div>';
+  } else {
+    let html = lines.map(l=>`<div class="summary-line"><span>${l.label} (${l.injections})</span><span>$${l.price.toFixed(2)}</span></div>`).join('');
+    html += groupNames.map(g=>`<div class="summary-line stop"><span>Stop charge — ${g}</span><span>$65.00</span></div>`).join('');
+    html += `<div class="summary-line total"><span>Total</span><span>$${grandTotal.toFixed(2)}</span></div>`;
+    summaryEl.innerHTML = html;
+  }
+
+  if(document.getElementById('careCheck').checked){
+    summaryEl.innerHTML += '<div class="summary-line care-note">+ Tree &amp; Shrub Care — refer to price sheet (not included above)</div>';
+  }
+}
+
+document.querySelectorAll('#view-pricing .qty-input').forEach(inp=>{
+  inp.addEventListener('input', calcPricing);
+});
+document.getElementById('careCheck').addEventListener('change', calcPricing);
+document.getElementById('clearPricing').addEventListener('click', ()=>{
+  document.querySelectorAll('#view-pricing .qty-input').forEach(i=>i.value='');
+  document.querySelectorAll('#view-pricing .row-result').forEach(r=>r.textContent='—');
+  document.getElementById('careCheck').checked = false;
+  calcPricing();
+});
 </script>
 </body>
 </html>
