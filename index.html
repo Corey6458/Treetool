@@ -374,8 +374,10 @@
         <div class="chip" data-tag="cankers">Cankers / sunken bark</div>
         <div class="chip" data-tag="exit-holes">Small holes in bark</div>
         <div class="chip" data-tag="webbing-stippling">Webbing or speckled, dusty-looking leaves</div>
-        <div class="chip" data-tag="shepherds-crook">Shoot tip curls into a hook and blackens</div>
         <div class="chip" data-tag="resin-sap">Resin / sap flow</div>
+        <div class="chip" data-tag="chewed-leaves">Chewed, notched, or skeletonized leaves</div>
+        <div class="chip" data-tag="sticky-honeydew">Sticky residue or black sooty coating</div>
+        <div class="chip" data-tag="white-coating">White or gray powdery coating</div>
       </div>
 
       <h2>When you're seeing it</h2>
@@ -383,7 +385,6 @@
         <div class="chip" data-tag="spring">Spring</div>
         <div class="chip" data-tag="summer">Summer</div>
         <div class="chip" data-tag="fall">Fall</div>
-        <div class="chip" data-tag="late-winter">Late winter</div>
       </div>
 
       <h2>Tree species (if known)</h2>
@@ -502,22 +503,22 @@ const ISSUES = [
     photo:"https://www.canr.msu.edu/resources/apple_scab"
   },
   {
-    id:"10", name:"Fire blight", latin:"Erwinia amylovora",
-    hosts:"Crabapple, pear, hawthorn, serviceberry",
-    symptoms:"Blossoms and shoot tips blacken and die, curling into a distinctive hook shape often called a shepherd's crook. Sunken, discolored cankers may ooze on branches below the dead tips.",
-    tags:["shoots-twigs","shepherds-crook","browning","cankers","spring","host-crabapple"],
-    lookalike:"The hooked, blackened shoot tip is fairly distinctive — frost damage browns growth without the crook shape.",
-    urgency:"none", treatment:"No Treatment Available", action:"Flag for prompt attention. Prune out infected wood well below visible symptoms during dry weather only, sanitizing tools between cuts to avoid spreading it further.",
-    photo:"https://www.canr.msu.edu/news/managing_fire_blight_on_ornamentals"
+    id:"10", name:"Rust", latin:"Gymnosporangium spp. (cedar-apple rust and related rusts)",
+    hosts:"Crabapple, apple, hawthorn — requires a nearby eastern redcedar or juniper to complete its cycle",
+    symptoms:"Bright orange-yellow spots appear on the upper leaf surface in late spring to summer, sometimes with small tube-like structures forming on the leaf underside a few weeks later. On a nearby eastern redcedar or juniper, gelatinous orange horn-like galls appear after spring rains.",
+    tags:["leaves","spots-lesions","yellowing","spring","summer","host-crabapple"],
+    lookalike:"The bright orange color and a cedar or juniper growing nearby set this apart from ordinary leaf spot, which stays brown to black.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Document and note whether a cedar or juniper is growing nearby, since the disease needs both hosts to complete its cycle. Rarely serious on established trees; treatment timing is tied to spring rain events rather than a same-day fix.",
+    photo:"https://www.canr.msu.edu/news/cedar_apple_rust_in_eastern_redcedar_trees_attracts_attention_every_spring"
   },
   {
-    id:"11", name:"Verticillium wilt", latin:"Verticillium dahliae",
-    hosts:"Maple (especially), redbud, smoke tree",
-    symptoms:"Individual branches wilt and die on just one side of the canopy while the rest of the tree looks normal, usually appearing during summer heat stress. Peeling bark on an affected branch can show streaking in the outer sapwood.",
-    tags:["whole-canopy","wilting","vascular-streaking","summer","host-maple","host-elm"],
-    lookalike:"The one-sided pattern is the key tell — oak wilt and Dutch elm disease affect different host species and tend to spread through more of the crown.",
-    urgency:"none", treatment:"No Treatment Available", action:"Document which branches are affected and the host species. No cure once systemic; recommend removing dead wood and monitoring tree stress rather than same-day escalation.",
-    photo:"https://www.canr.msu.edu/news/verticillium_wilt_refresher"
+    id:"11", name:"Topical insects", latin:"Beetles, weevils, and sucking insects (aphids, scale, and similar)",
+    hosts:"Wide range of ornamental and shade trees",
+    symptoms:"Chewing insects such as beetles and weevils leave skeletonized leaves, notched leaf edges, or scattered holes. Sucking insects like aphids and scale cause curled or yellowing leaves along with a sticky residue that can turn into a black sooty coating.",
+    tags:["leaves","shoots-twigs","chewed-leaves","sticky-honeydew","spring","summer"],
+    lookalike:"Check for the insects themselves or their honeydew residue up close — from a distance, light feeding damage can look like ordinary leaf spot or scorch.",
+    urgency:"care", treatment:"Recommend Tree & Shrub Care", action:"Document which insect and host tree are involved if possible. Most cases are cosmetic and resolve with a standard treatment visit; escalate only if defoliation is severe or spreading fast.",
+    photo:"https://www.canr.msu.edu/resources/insects-in-the-garden-lesson-2"
   },
   {
     id:"12", name:"Spider mites", latin:"Tetranychidae (various species)",
@@ -529,13 +530,13 @@ const ISSUES = [
     photo:"https://www.canr.msu.edu/resources/spruce_spider_mite"
   },
   {
-    id:"13", name:"Winter injury", latin:"Environmental desiccation",
-    hosts:"Evergreens and broadleaf evergreens, especially wind-exposed plantings",
-    symptoms:"Needles or leaves brown at the tips or margins, often worse on the side of the tree facing prevailing winter wind, becoming visible as snow melts in late winter. New growth later in spring is usually unaffected.",
-    tags:["needles","leaves","browning","late-winter","host-evergreen","host-spruce","host-pine"],
-    lookalike:"The one-sided, wind-facing pattern and lack of resin or fungal fruiting bodies separate this from tip blight or needlecast.",
-    urgency:"care", treatment:"Recommend Tree & Shrub Care", action:"Document and monitor new spring growth before recommending any pruning — winter injury often resolves on its own once the tree leafs out.",
-    photo:"https://www.canr.msu.edu/news/winter_tree_and_shrub_injury_what_are_the_signs"
+    id:"13", name:"Powdery mildew", latin:"Various fungal genera (e.g., Microsphaera, Erysiphe)",
+    hosts:"Lilac, crabapple, oak, dogwood, and many ornamental trees and shrubs",
+    symptoms:"A white to gray powdery coating develops on the upper leaf surface, young shoots, and sometimes flower buds, most noticeable in mid to late summer. Heavily coated leaves may look distorted or dusted with flour, though the tree is rarely seriously harmed.",
+    tags:["leaves","shoots-twigs","white-coating","summer","host-crabapple"],
+    lookalike:"Wipe the leaf to check — powdery mildew won't rub off completely and often leaves a faint white haze behind, unlike dust or spray residue.",
+    urgency:"wsa", treatment:"Recommend WSA (Fall)", action:"Document which plant is affected; mostly a cosmetic issue on established trees. Recommend improving air circulation and light exposure; treatment is rarely needed except on repeatedly disfigured specimens.",
+    photo:"https://www.canr.msu.edu/resources/powdery_mildew"
   },
   {
     id:"14", name:"Girdling roots / root decline", latin:"Structural root issue",
