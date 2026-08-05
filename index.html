@@ -526,7 +526,7 @@
       <p class="sub">Tap what you are seeing or what the customer is telling you. The key narrows down likely cause and tells you what to pitch to the customer along with providing pricing to you.</p>
     </div>
     <div class="top-right">
-      Coverage: <b>14 issues</b><br>
+      Coverage: <b>17 issues</b><br>
       Region: <b>Lower &amp; Upper Michigan</b><br>
       Use: <b>Screening only — confirm before treating</b>
     </div>
@@ -584,6 +584,7 @@
         <div class="chip" data-tag="host-maple">Maple</div>
         <div class="chip" data-tag="host-birch">Birch</div>
         <div class="chip" data-tag="host-crabapple">Crabapple / apple</div>
+        <div class="chip" data-tag="host-boxwood">Boxwood</div>
         <div class="chip" data-tag="host-evergreen">Other evergreen</div>
       </div>
 
@@ -594,7 +595,7 @@
     <div class="results">
       <div class="results-head">
         <h2>Likely matches</h2>
-        <span class="n" id="resultCount">14 issues</span>
+        <span class="n" id="resultCount">17 issues</span>
       </div>
       <div id="resultsBody"></div>
     </div>
@@ -811,7 +812,7 @@ const ISSUES = [
     symptoms:"Foliage develops a fine stippled, bronzed, or dusty appearance, sometimes with faint webbing between needles or leaves during hot, dry summer stretches. A white sheet of paper tapped under a branch will show tiny moving specks.",
     tags:["leaves","webbing-stippling","browning","summer","host-spruce","host-evergreen"],
     lookalike:"Confirm with the paper-tap test before assuming needlecast — mite damage looks similar from a distance but the insects are visible up close.",
-    urgency:"care", treatment:"Recommend Tree & Shrubs Care", action:"Document and note weather conditions. A strong water spray or miticide on the standard treatment schedule usually resolves it; not urgent.",
+    urgency:"care", treatment:"Recommend Tree & Shrub Care", action:"Document and note weather conditions. A strong water spray or miticide on the standard treatment schedule usually resolves it; not urgent.",
     photo:"https://www.canr.msu.edu/resources/spruce_spider_mite"
   },
   {
@@ -831,6 +832,33 @@ const ISSUES = [
     lookalike:"Rule out chlorosis first by checking the trunk base for a visible root flare — if the trunk goes straight into the ground like a pole, suspect girdling roots.",
     urgency:"none", treatment:"No Treatment available", action:"Document root flare condition with a photo. Recommend root collar excavation to confirm; not an emergency but worth flagging before the decline advances further.",
     photo:"https://extension.umd.edu/resource/girdling-roots"
+  },
+  {
+    id:"15", name:"Boxwood blight", latin:"Calonectria pseudonaviculata",
+    hosts:"Boxwood (Buxus spp.); also sweetbox and pachysandra",
+    symptoms:"Dark brown leaf spots, often with a darker border, appear first on lower interior foliage, followed by narrow black streaks or lesions on the green stems. Leaves drop rapidly and can leave whole branches bare within days during warm, humid stretches.",
+    tags:["leaves","shoots-twigs","spots-lesions","browning","defoliation","summer","fall","host-boxwood"],
+    lookalike:"The black stem lesions are the giveaway. Boxwood moth strips leaf tissue and leaves webbing and frass behind, while blight drops intact leaves with no feeding damage; winter burn bronzes the exposed side of the shrub uniformly without spots or stem streaking.",
+    urgency:"none", treatment:"No Treatment available", action:"Escalate same day — this one spreads fast and moves on tools, gloves, and debris. Photograph both the leaf spots and the stem lesions, do not shear or prune while the foliage is wet, and do not carry trimmings to the next property. Recommend confirmation through MSU Diagnostic Services; management is removal with double-bagged disposal, not treatment.",
+    photo:"https://www.canr.msu.edu/resources/whats-wrong-with-my-boxwood-common-issues-and-solutions"
+  },
+  {
+    id:"16", name:"Boxwood moths", latin:"Cydalima perspectalis (box tree moth)",
+    hosts:"Boxwood (Buxus spp.)",
+    symptoms:"Lime-green caterpillars with black stripes, white spots, and a shiny black head feed inside loose webbing, stripping leaf tissue down to the midvein. Look for webbing, green-tan frass pellets, and rapid defoliation from June through September — a shrub can be stripped in a few weeks.",
+    tags:["leaves","shoots-twigs","chewed-leaves","webbing-stippling","defoliation","spring","summer","host-boxwood"],
+    lookalike:"Chewed leaf tissue plus webbing and frass separates this from boxwood blight, which drops whole leaves with no feeding damage. Boxwood leafminer blisters the leaf from the inside and psyllid cups the new tips — neither leaves webbing.",
+    urgency:"care", treatment:"Recommend Tree & Shrub Care", action:"Photograph the caterpillars and webbing and note the address. Michigan has an MDARD boxwood quarantine — do not move any boxwood material off site, including trimmings and dead shrubs, and bag debris on the spot. Report suspected finds outside the quarantine counties through MDARD's Eyes in the Field. Set customer expectations for repeat visits: there are two to three generations per season.",
+    photo:"https://www.canr.msu.edu/resources/box-tree-moth-alert"
+  },
+  {
+    id:"17", name:"Tar spot", latin:"Rhytisma acerinum / americanum / punctatum",
+    hosts:"Norway, silver, red, and sugar maple; box elder",
+    symptoms:"Small light-green to yellow spots show up on the leaves in early summer, then darken and thicken into raised, glossy black blotches up to about an inch across by late summer and fall. Heavily spotted leaves may drop early, but the tree itself is not harmed.",
+    tags:["leaves","spots-lesions","defoliation","summer","fall","host-maple"],
+    lookalike:"The raised, shiny, tar-like texture sets this apart from ordinary leaf spot, which stays flat and brown-black with a yellow halo, and from anthracnose, whose blotches follow the leaf veins.",
+    urgency:"none", treatment:"No Treatment available", action:"Reassure the customer — this is cosmetic and does not threaten an established maple. Infection happens back at leaf-out in spring, so nothing sprayed in late summer will change what they are looking at. Recommend raking and removing fallen leaves in autumn to cut next year's spore load, and note that neighboring trees feed the cycle too.",
+    photo:"https://www.canr.msu.edu/news/black_polka_dots_on_maple_tar_spot"
   }
 ];
 
