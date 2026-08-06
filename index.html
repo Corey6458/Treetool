@@ -513,6 +513,139 @@
     color:var(--ink-soft);
     line-height:1.6;
   }
+
+  /* ---- On the phone tab ---- */
+  .phone-layout{
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:30px;
+    align-items:start;
+  }
+  @media (max-width:900px){ .phone-layout{grid-template-columns:1fr;} }
+  @media (max-width:900px){ .phone-panel{position:static;} }
+
+  .say-box{
+    width:100%;
+    min-height:170px;
+    resize:vertical;
+    font-family:'Public Sans', sans-serif;
+    font-size:14px;
+    line-height:1.55;
+    padding:12px;
+    border:1.3px solid var(--line);
+    border-radius:2px;
+    background:#fff;
+    color:var(--ink);
+  }
+  .say-box:focus{outline:none;border-color:var(--forest);}
+  .say-hint{
+    font-size:12px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:10px 0 0;
+  }
+  .try-row{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+  .try{
+    font-family:'Public Sans', sans-serif;
+    font-size:12px;
+    padding:6px 10px;
+    border:1.3px dashed var(--line);
+    border-radius:3px;
+    background:transparent;
+    color:var(--ink-soft);
+    cursor:pointer;
+    text-align:left;
+    line-height:1.4;
+  }
+  .try:hover{border-color:var(--forest);border-style:solid;color:var(--forest);}
+
+  .heard-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+  .heard{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    padding:2px 7px;
+    border-radius:2px;
+    background:var(--forest-tint);
+    color:var(--forest-dark);
+    border:1px solid var(--forest);
+  }
+  .heard.neg{
+    background:var(--line-soft);
+    color:var(--ink-soft);
+    border-color:var(--line);
+    text-decoration:line-through;
+  }
+
+  .conf{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    border-radius:20px;
+    padding:2px 9px;
+    white-space:nowrap;
+    border:1.3px solid;
+  }
+  .conf.strong{color:var(--forest);border-color:var(--forest);}
+  .conf.maybe{color:var(--gold);border-color:var(--gold);}
+  .conf.weak{color:var(--ink-soft);border-color:var(--line);}
+
+  .lead-note{
+    border:1.5px solid var(--gold);
+    background:var(--gold-tint);
+    border-radius:3px;
+    padding:13px 15px;
+    font-size:13px;
+    line-height:1.55;
+    margin-bottom:16px;
+  }
+  .lead-note b{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:6px;
+    color:var(--gold);
+  }
+  .lead-note ul{margin:8px 0 0;padding-left:17px;}
+  .lead-note li{margin-bottom:4px;}
+  .lead-note.escalate{border-color:var(--rust);background:var(--rust-tint);}
+  .lead-note.escalate b{color:var(--rust);}
+
+  .phone-cards{display:grid;grid-template-columns:1fr;gap:16px;}
+
+  .ask{
+    margin-top:12px;
+    padding-top:11px;
+    border-top:1px dashed var(--line);
+  }
+  .ask-h{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:7px;
+  }
+  .ask ul{margin:0;padding-left:17px;}
+  .ask li{font-size:13px;line-height:1.5;margin-bottom:5px;}
+
+  .copy-btn{
+    margin-top:13px;
+    width:100%;
+    background:transparent;
+    border:1.3px solid var(--forest);
+    color:var(--forest);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    padding:8px 0;
+    border-radius:2px;
+    cursor:pointer;
+  }
+  .copy-btn:hover{background:var(--forest);color:var(--paper-card);}
+
 </style>
 </head>
 <body>
@@ -534,6 +667,7 @@
 
   <div class="tabbar">
     <button class="tab-btn active" data-tab="fieldkey">Field key</button>
+    <button class="tab-btn" data-tab="phone">On the phone</button>
     <button class="tab-btn" data-tab="pricing">Price calculator</button>
   </div>
 
@@ -700,6 +834,32 @@
 
     <footer class="note">
       Stop charges are billed once per visit, not per tree. WIF and WIN are done in the same visit and share one stop charge; WSA and WIM are done separately and each carry their own. This calculator is for internal quoting on wedge trunk injections only.
+    </footer>
+  </div>
+
+  <div id="view-phone" class="tab-view">
+    <div class="phone-layout">
+      <div class="panel phone-panel">
+        <h2 class="first">What the customer is telling you</h2>
+        <textarea id="sayBox" class="say-box" placeholder="Type what they're saying, in their words.&#10;&#10;e.g. Blue spruce in the back yard, bottom branches are bare and the needles are dropping from the inside out"></textarea>
+        <p class="say-hint">Write it the way they say it — rambling, guesses, and wrong plant names are fine. The key reads for symptoms, species, and timing as you type.</p>
+        <div class="try-row" id="tryRow"></div>
+        <button class="clear-btn" id="clearPhone">Clear</button>
+        <div class="count-line" id="phoneCount">Nothing entered yet</div>
+        <div class="heard-row" id="heardRow"></div>
+      </div>
+
+      <div class="results">
+        <div class="results-head">
+          <h2>Likely cause</h2>
+          <span class="n" id="phoneResultCount">&mdash;</span>
+        </div>
+        <div id="phoneBody"></div>
+      </div>
+    </div>
+
+    <footer class="note">
+      Phone triage only &mdash; nobody has looked at the tree yet, so treat everything here as a starting point for the visit rather than a diagnosis. The questions under each match are the fastest way to separate the top two before you dispatch. If oak wilt, Dutch elm disease, boring insects, or boxwood blight comes up, get the address on the schedule now instead of waiting for the next route through that area.
     </footer>
   </div>
 
@@ -1021,6 +1181,380 @@ document.getElementById('clearPricing').addEventListener('click', ()=>{
   document.getElementById('careCheck').checked = false;
   calcPricing();
 });
+
+/* ==========================================================
+   ON THE PHONE — free-text triage
+   Rep types what the customer is saying; this reads the text
+   for symptoms, species and timing, then ranks the same
+   ISSUES list. Pure string matching, no network calls.
+   ========================================================== */
+
+/* Customer wording -> field-key tags. `say` is what shows in
+   the "what I picked up" row. Keywords match as prefixes, so
+   "needle" also catches "needles". */
+const LEX = [
+  /* where on the tree */
+  {t:["needles"],             say:"needles",              k:["needle"]},
+  {t:["leaves"],              say:"leaves",               k:["leaf","leaves","foliage"]},
+  {t:["bark-trunk"],          say:"bark / trunk",         k:["bark","trunk"]},
+  {t:["shoots-twigs"],        say:"shoot / twig tips",    k:["tip","twig","new growth","candle","ends of the branches"]},
+  {t:["whole-canopy"],        say:"whole canopy",         k:["whole tree","entire tree","top of the tree","whole top","top is brown","top is dying","top of it","canopy","crown","half the tree","one side of the tree","all over the tree"]},
+  {t:["roots-base"],          say:"roots / base",         k:["root","base of the tree","bottom of the trunk","where it meets the ground","by the ground"]},
+
+  /* what it looks like */
+  {t:["spots-lesions"],       say:"spots or lesions",     k:["spot","blotch","lesion","dots","freckle"]},
+  {t:["yellowing"],           say:"yellowing",            k:["yellow","pale leaves","pale green","light green","washed out"]},
+  {t:["browning"],            say:"browning / scorch",    k:["brown","scorch","burnt","burned","crispy","dried up","dead looking","turning color early"]},
+  {t:["wilting"],             say:"wilting",              k:["wilt","droop","limp","hanging down","flopping"]},
+  {t:["defoliation"],         say:"early leaf drop",      k:["dropping leaves","losing leaves","leaves are falling","leaves fell","lost its leaves","lost all its leaves","defoliat","bare","thinning","shedding","losing needles","dropping needles","leaves everywhere"]},
+  {t:["vascular-streaking"],  say:"streaking under bark", k:["streak","dark lines in the wood","under the bark","stain in the wood"]},
+  {t:["cankers"],             say:"cankers",              k:["canker","sunken","dead patch on the bark","sore on the trunk","dead spot on the trunk"]},
+  {t:["exit-holes"],          say:"holes in the bark",    k:["holes in the bark","little holes","tiny holes","small holes","d-shaped","d shaped","exit hole","woodpecker","bark is splitting","bark splitting","cracks in the bark","sawdust"]},
+  {t:["webbing-stippling"],   say:"webbing / stippling",  k:["web","cobweb","dusty","speckled","stippl","bronze","silvery","gritty"]},
+  {t:["resin-sap"],           say:"resin / sap",          k:["sap","resin","pitch","oozing","weeping","running sap","gummy"]},
+  {t:["chewed-leaves"],       say:"chewed leaves",        k:["chewed","chewing","eaten","eating the leaves","eating my","something is eating","something's eating","holes in the leaves","holes on the leaves","caterpillar","worms","skeletoniz","notched","nibbl","stripped","munch"]},
+  {t:["chewed-leaves"],       say:"insects seen on the plant", k:["bug","insect","aphid","beetle","weevil","scale insect","scale on","crawling","little green things","things on the leaves"]},
+  {t:["sticky-honeydew"],     say:"sticky / sooty",       k:["sticky","honeydew","sooty","black film","black coating","black mold","sticky on my car","sticky stuff","shiny residue"]},
+  {t:["white-coating"],       say:"white powdery coating",k:["white powder","powdery","looks like flour","white film","white coating","gray coating","grey coating","dusted white","white fuzz"]},
+
+  /* when */
+  {t:["spring"],              say:"spring",               k:["spring","march","april","may "]},
+  {t:["summer"],              say:"summer",               k:["summer","june","july","august","hot and dry","heat wave","this heat"]},
+  {t:["fall"],                say:"fall",                 k:["fall","autumn","september","october","november"]},
+
+  /* species */
+  {t:["host-spruce"],         say:"spruce",               k:["spruce"]},
+  {t:["host-pine"],           say:"pine",                 k:["pine"]},
+  {t:["host-oak"],            say:"oak",                  k:["oak"]},
+  {t:["host-elm"],            say:"elm",                  k:["elm"]},
+  {t:["host-ash"],            say:"ash",                  k:["ash tree","ash trees","my ash","the ash","an ash"]},
+  {t:["host-maple"],          say:"maple",                k:["maple","box elder","boxelder"]},
+  {t:["host-birch"],          say:"birch",                k:["birch"]},
+  {t:["host-crabapple"],      say:"crabapple / apple",    k:["crabapple","crab apple","apple tree","apple trees","hawthorn"]},
+  {t:["host-boxwood"],        say:"boxwood",              k:["boxwood","box wood","buxus","box tree","box shrub","box hedge"]},
+  {t:["host-evergreen"],      say:"other evergreen",      k:["arborvitae","juniper","cedar","hemlock","fir","evergreen"]}
+];
+
+/* Phrases that point hard at one issue. These outweigh single tags. */
+const SAYS = {
+  "01":["losing needles from the inside","needles from the inside out","inside of the tree is bare","bottom branches are bare","lower branches are bare","purple needles","inside needles","needles are dropping","spruce is thinning"],
+  "02":["oak wilt","browned in a few weeks","died in a few weeks","top of the oak","leaves are browning from the edge","browning from the edges in","oak is dying","losing my oak","oak went fast","went from green to bare"],
+  "03":["spots with yellow rings","yellow ring around","black spots on the leaves","spots on the leaves"],
+  "04":["tips are brown","tips are dying","new growth is dying","new growth died","candles","ends of the branches are brown","tips of the pine"],
+  "05":["dutch elm","one branch is wilting","one branch died","branch on my elm","elm is wilting","flagging","one limb is dying"],
+  "06":["d-shaped","d shaped","woodpeckers are all over","woodpeckers on the trunk","bark is splitting","sprouts at the base","shoots at the bottom","ash is thinning","borer","emerald ash","dying from the top down"],
+  "07":["veins are still green","veins stay green","green veins","yellow between the veins","leaves are pale but the veins"],
+  "08":["along the veins","blotches on the leaves","curled after a wet spring","anthracnose","second set of leaves"],
+  "09":["apple scab","olive spots","velvety spots","crabapple is losing leaves","spots on the fruit","fruit is spotted"],
+  "10":["orange spots","bright orange","rust colored spots","orange growths","orange jelly"],
+  "11":["aphid","scale insects","japanese beetle","beetles are","bugs are eating","bugs on the leaves","bugs on the tree","bugs on my tree","bugs all over","insects on the leaves","little bugs","tiny bugs on the leaves","covered in bugs","see bugs","bugs everywhere","holes in the leaves","holes on the leaves","leaves have holes","holes all over the leaves","chewing on the leaves","sticky on my car","sooty","black film","ants on the tree"],
+  "12":["spider mite","mites","dusty looking","looks dusty","bronze","webbing on the needles","tiny bugs on the needles"],
+  "13":["white powder","looks like flour","powdery white","white film on the leaves","looks dusted"],
+  "14":["planted a few years ago","never took off","never filled in","trunk goes straight into the ground","no root flare","root wrapped around","slowly declining","getting worse every year","smaller leaves every year"],
+  "15":["boxwood blight","black streaks on the stems","black lines on the stems","boxwood turned brown","boxwood dropped","boxwood is bare","hedge went brown","dropped its leaves in days"],
+  "16":["green caterpillars","caterpillars in the","webbing in the boxwood","boxwood is being eaten","box tree moth","boxwood moth","stripped the boxwood","little green worms"],
+  "17":["tar spot","looks like tar","like tar","tarry spots","black dots on the leaves","raised black spots","raised and shiny","shiny black spots","black spots on my maple"]
+};
+
+/* Questions a rep can ask on the call to confirm or rule out. */
+const ASK = {
+  "01":["Is the browning starting on the inside needles near the trunk and working outward, or is the whole tree brown at once?","Are the lower branches losing needles while the top still looks alright?"],
+  "02":["How fast did this happen — weeks, or over a season?","Do the leaves look scorched from the outer edge inward, with the top of the tree going first?","Are there other oaks nearby that have died in the last couple of years?"],
+  "03":["Are the spots round and scattered across the leaf, or blotches that run along the veins?","Was this past spring wet?"],
+  "04":["Is it only the new growth at the ends of the branches?","Is there sap or resin beading at the base of the dead tips?"],
+  "05":["Is it one branch or section wilting while the rest of the tree still looks normal?","Did those leaves yellow first, then turn brown and stay hanging on the branch?"],
+  "06":["Are there small holes in the bark — round, or D-shaped like a teardrop?","Have you noticed woodpeckers working the trunk, or bark flaking off?","Is the tree thinning from the top down, with sprouts coming out low on the trunk?"],
+  "07":["Are the veins themselves still green while the tissue between them is yellow?","Is it worst on the newest growth at the branch tips?"],
+  "08":["Do the brown blotches follow the leaf veins rather than sitting as round spots?","Did this show up after a cool, wet stretch in spring?"],
+  "09":["Is it a crabapple or apple tree?","Are the spots olive-green to black and velvety, and is the fruit spotted too?"],
+  "10":["What color are the spots — bright orange, or brown to black?","Is there a juniper or cedar growing anywhere nearby?"],
+  "11":["Is anything sticky underneath the tree — on the car, driveway, or patio furniture?","Can you see insects on the undersides of the leaves or along the stems?"],
+  "12":["If you hold a white sheet of paper under a branch and tap it, do you see tiny specks moving on the paper?","Has it been hot and dry where the plant is?"],
+  "13":["Does the white coating rub off completely, or does it leave a haze behind?","Is it on the upper surface of the leaves?"],
+  "14":["At the base, does the trunk flare out where it meets the soil, or does it go straight into the ground like a fence post?","Has it been slowly declining over a few years rather than turning suddenly?"],
+  "15":["Are there dark streaks or black lines on the green stems, not just spots on the leaves?","Did the leaves drop over days rather than weeks?","Has anything been planted or a wreath brought in recently?"],
+  "16":["Do you see green caterpillars with black stripes, or any webbing in the shrub?","Is there tan-green pellet debris down in the bottom of the plant?"],
+  "17":["Are the black spots raised and shiny, like drops of tar, or flat like ink?","Is the tree a maple?"]
+};
+
+/* Same-day escalations. */
+const URGENT = {"02":1,"05":1,"06":1,"15":1};
+
+const EXAMPLES = [
+  "Blue spruce out back, bottom branches are bare and it's dropping needles from the inside out",
+  "My oak looked fine in June and now the whole top is brown, it happened fast",
+  "The boxwood hedge is being eaten, there's webbing and little green worms in it",
+  "Black spots all over the maple leaves, they're raised and shiny like tar"
+];
+
+function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+/* A keyword is ignored if it sits right after a negation word. */
+function isNegated(text, idx){
+  const before = text.slice(Math.max(0, idx-38), idx);
+  return /\b(no|not|isn'?t|aren'?t|wasn'?t|weren'?t|don'?t|doesn'?t|didn'?t|without|never|none|nothing|nope|hasn'?t|haven'?t)\b[^.;!?]*$/i.test(before);
+}
+
+function readSay(raw){
+  const text = ' ' + raw.toLowerCase().replace(/[\u2019]/g,"'").replace(/\s+/g,' ') + ' ';
+  const tags = new Set(), ruledTags = new Set(), heard = [], ruled = [];
+
+  LEX.forEach(entry=>{
+    let hit = false, neg = false;
+    entry.k.forEach(k=>{
+      const re = new RegExp('\\b' + escRe(k.toLowerCase()), 'g');
+      let m;
+      while((m = re.exec(text)) !== null){
+        if(isNegated(text, m.index)) neg = true; else hit = true;
+      }
+    });
+    if(hit){ entry.t.forEach(t=>tags.add(t)); heard.push(entry.say); }
+    else if(neg){ entry.t.forEach(t=>ruledTags.add(t)); ruled.push(entry.say); }
+  });
+
+  /* Holes in LEAVES are chewing damage; holes in BARK are borer exit holes.
+     Phrasing varies ("holes on the leaves", "the leaves have holes in them"),
+     so catch it by proximity rather than by listing every wording. */
+  const leafHole = /\bholes?\b[^.;!?]{0,25}\b(leaf|leaves|foliage)\b|\b(leaf|leaves|foliage)\b[^.;!?]{0,25}\bholes?\b/.test(text);
+  const barkWord = /\b(bark|trunk|woodpecker|d-shaped|d shaped|sawdust|borer)\b/.test(text);
+  if(leafHole){
+    if(!tags.has('chewed-leaves')){ tags.add('chewed-leaves'); heard.push('chewed leaves'); }
+    if(!barkWord && tags.has('exit-holes')){
+      tags.delete('exit-holes');
+      const i = heard.indexOf('holes in the bark');
+      if(i > -1) heard.splice(i,1);
+    }
+  }
+
+  return {text, tags, ruledTags, heard, ruled};
+}
+
+function tagWeight(t){
+  if(t==='spring' || t==='summer' || t==='fall') return 0.55;
+  if(t.indexOf('host-')===0) return 1.6;
+  return 1;
+}
+
+function scorePhone(read){
+  /* Did the caller name a species at all? */
+  let namedHost = false;
+  read.tags.forEach(t=>{ if(t.indexOf('host-')===0) namedHost = true; });
+
+  return ISSUES.map(iss=>{
+    let s = 0;
+    const matched = [];
+    iss.tags.forEach(t=>{
+      if(read.tags.has(t)){ s += tagWeight(t); matched.push(t); }
+      else if(read.ruledTags.has(t)){ s -= 0.7; }
+    });
+
+    /* Species handling. Topical insects hit a wide range of trees and carry no
+       host tags, so without this they sink every time a species is named, while
+       host-specific issues float up on the species alone. */
+    if(namedHost){
+      const issHosts = iss.tags.filter(t=>t.indexOf('host-')===0);
+      const hostHit  = issHosts.filter(t=>read.tags.has(t)).length > 0;
+      if(issHosts.length === 0) s += 1.0;       /* affects any species */
+      else if(!hostHit)         s -= 1.0;       /* wrong host for this issue */
+    }
+    const direct = (SAYS[iss.id] || []).filter(p=> read.text.indexOf(p) > -1);
+    s += direct.length * 2.4;
+    return {iss, s, matched, direct};
+  }).filter(x=> x.s > 0.9)
+    .sort((a,b)=> b.s - a.s || (b.matched.length/b.iss.tags.length) - (a.matched.length/a.iss.tags.length));
+}
+
+function confClass(x, top, i, gap){
+  if(i===0 && x.s >= 4 && gap >= 1.35) return ['strong','Strong lead'];
+  if(x.s >= top*0.75) return ['maybe','Possible'];
+  return ['weak','Worth ruling out'];
+}
+
+function summaryFor(x, said){
+  const L = [];
+  L.push('LIKELY CAUSE: ' + x.iss.name + ' (' + x.iss.latin + ')  [field key #' + x.iss.id + ']');
+  L.push('RECOMMENDATION: ' + x.iss.treatment);
+  L.push('');
+  L.push('CUSTOMER SAID: ' + said.trim());
+  L.push('');
+  L.push('WHAT TO CHECK ON SITE: ' + x.iss.action);
+  L.push('');
+  L.push('QUESTIONS TO CONFIRM:');
+  (ASK[x.iss.id] || []).forEach(q=> L.push('  - ' + q));
+  if(x.iss.rate){
+    L.push('');
+    L.push('PRICING: $' + x.iss.rate.toFixed(2) + '/injection, one every ' + x.iss.spacing + ' in of circumference, plus $65 stop charge.');
+  }
+  L.push('');
+  L.push('Phone triage only — not confirmed on site.');
+  return L.join('\n');
+}
+
+function renderPhone(){
+  const raw = document.getElementById('sayBox').value;
+  const body = document.getElementById('phoneBody');
+  const head = document.getElementById('phoneResultCount');
+  const countLine = document.getElementById('phoneCount');
+  const heardRow = document.getElementById('heardRow');
+
+  if(!raw.trim()){
+    body.innerHTML = '<div class="empty-state">Start typing what the customer is describing. Species, what it looks like, where on the tree, and roughly when it started all help — you do not need all four.</div>';
+    head.textContent = '—';
+    countLine.textContent = 'Nothing entered yet';
+    heardRow.innerHTML = '';
+    return;
+  }
+
+  const read = readSay(raw);
+  heardRow.innerHTML =
+    read.heard.map(h=>`<span class="heard">${h}</span>`).join('') +
+    read.ruled.map(h=>`<span class="heard neg">${h}</span>`).join('');
+  countLine.textContent = read.heard.length
+    ? read.heard.length + (read.heard.length===1 ? ' clue picked up' : ' clues picked up')
+    : 'Nothing recognized yet — try naming the tree and what it looks like';
+
+  const scored = scorePhone(read);
+
+  if(scored.length===0){
+    body.innerHTML = '<div class="empty-state">Nothing matches yet. Ask what kind of tree it is, what part looks wrong (leaves, needles, bark, whole tree), and what the bad part actually looks like — spots, browning, wilting, holes, sticky, webbing.</div>';
+    head.textContent = 'no match';
+    return;
+  }
+
+  const top = scored[0].s;
+  const gap = scored.length > 1 ? top/scored[1].s : 99;
+  const show = scored.filter(x=> x.s >= top*0.45).slice(0,4);
+  head.textContent = show.length + (show.length===1 ? ' candidate' : ' candidates');
+
+  let banner = '';
+  const urgentHit = show.filter(x=> URGENT[x.iss.id]);
+  if(urgentHit.length){
+    banner += `<div class="lead-note escalate">
+      <b>Time-sensitive — do not park this</b>
+      ${urgentHit.map(x=>x.iss.name).join(' and ')} ${urgentHit.length>1?'are':'is'} in the running. Take the address and get it on the schedule today, and tell the customer not to prune anything in the meantime.
+    </div>`;
+  }
+  if(gap < 1.35 && scored.length > 1){
+    const qs = [];
+    (ASK[scored[0].iss.id]||[]).slice(0,1).forEach(q=>qs.push(q));
+    (ASK[scored[1].iss.id]||[]).slice(0,1).forEach(q=>qs.push(q));
+    banner += `<div class="lead-note">
+      <b>Not conclusive yet — ask next</b>
+      ${scored[0].iss.name} and ${scored[1].iss.name} are running close together. These two questions separate them:
+      <ul>${qs.map(q=>`<li>${q}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  body.innerHTML = banner + '<div class="phone-cards">' + show.map((x,i)=>{
+    const [cls, label] = confClass(x, top, i, gap);
+    const asks = (ASK[x.iss.id]||[]).slice(0,3);
+    return `
+    <div class="card" data-issue="${x.iss.id}">
+      <div class="card-top">
+        <span class="card-id">FIELD KEY #${x.iss.id}</span>
+        <span class="conf ${cls}">${label}</span>
+      </div>
+      <h3>${x.iss.name}</h3>
+      <p class="latin">${x.iss.latin}</p>
+      <p class="hosts"><b>Common hosts:</b> ${x.iss.hosts}</p>
+      <p class="symptoms">${x.iss.symptoms}</p>
+      ${x.matched.length ? `<div class="tagrow">${x.matched.map(t=>`<span class="tag-stamp">${t.replace(/-/g,' ')}</span>`).join('')}</div>` : ''}
+      <div class="action">
+        <span class="urgency ${x.iss.urgency}">${x.iss.treatment}</span><br>
+        ${x.iss.action}
+      </div>
+      <div class="ask">
+        <div class="ask-h">Ask to confirm</div>
+        <ul>${asks.map(q=>`<li>${q}</li>`).join('')}</ul>
+      </div>
+      <details class="lookalike">
+        <summary>Look-alike check</summary>
+        <div>${x.iss.lookalike}</div>
+      </details>
+      <div><a class="photo-link" href="${x.iss.photo}" target="_blank" rel="noopener">View reference photos ↗</a></div>
+      ${x.iss.rate ? `
+      <div class="price-calc">
+        <label>If they know the trunk circumference (in)</label>
+        <div class="price-calc-row">
+          <input type="number" min="0" step="1" class="circ-input" data-rate="${x.iss.rate}" data-spacing="${x.iss.spacing}" placeholder="e.g. 48">
+          <span class="price-output">—</span>
+        </div>
+      </div>` : x.iss.urgency==='care' ? `<div class="price-note">Pricing: refer to price sheet — depends on lawn sq ft.</div>` : ''}
+      <button class="copy-btn" data-copy="${x.iss.id}">Copy for work order</button>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+/* ---- Phone tab wiring ---- */
+(function(){
+  const box = document.getElementById('sayBox');
+  let t = null;
+  box.addEventListener('input', ()=>{
+    clearTimeout(t);
+    t = setTimeout(renderPhone, 130);
+  });
+
+  document.getElementById('clearPhone').addEventListener('click', ()=>{
+    box.value = '';
+    renderPhone();
+    box.focus();
+  });
+
+  document.getElementById('tryRow').innerHTML =
+    EXAMPLES.map((e,i)=>`<button class="try" data-ex="${i}">“${e}”</button>`).join('');
+  document.getElementById('tryRow').addEventListener('click', e=>{
+    const btn = e.target.closest('.try');
+    if(!btn) return;
+    box.value = EXAMPLES[+btn.dataset.ex];
+    renderPhone();
+  });
+
+  /* circumference calc inside phone cards */
+  document.getElementById('phoneBody').addEventListener('input', e=>{
+    if(!e.target.classList.contains('circ-input')) return;
+    const rate = parseFloat(e.target.dataset.rate);
+    const spacing = parseFloat(e.target.dataset.spacing);
+    const circ = parseFloat(e.target.value);
+    const out = e.target.closest('.price-calc').querySelector('.price-output');
+    if(!circ || circ<=0){ out.textContent = '—'; return; }
+    const injections = Math.ceil(circ/spacing);
+    out.textContent = `${injections} injection${injections===1?'':'s'} × $${rate.toFixed(2)} = $${(injections*rate).toFixed(2)} (+ $65 stop charge)`;
+  });
+
+  /* copy for work order */
+  document.getElementById('phoneBody').addEventListener('click', e=>{
+    const btn = e.target.closest('.copy-btn');
+    if(!btn) return;
+    const id = btn.dataset.copy;
+    const iss = ISSUES.filter(i=>i.id===id)[0];
+    if(!iss) return;
+    const text = summaryFor({iss:iss}, box.value);
+    const done = ()=>{
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(()=>{ btn.textContent = old; }, 1400);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, ()=>fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  });
+
+  function fallbackCopy(text, done){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); done(); }catch(err){}
+    document.body.removeChild(ta);
+  }
+
+  renderPhone();
+})();
+
 </script>
 </body>
 </html>
