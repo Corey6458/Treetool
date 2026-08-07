@@ -646,6 +646,44 @@
   }
   .copy-btn:hover{background:var(--forest);color:var(--paper-card);}
 
+
+  /* ---- Deluxe Deep Root ---- */
+  .deep-group{background:var(--forest-tint);border-color:var(--forest);}
+  .deep-row{grid-template-columns:1fr 100px 200px 22px;}
+  @media (max-width:600px){ .deep-row{grid-template-columns:1fr;} }
+  .deep-x{
+    background:transparent;border:none;color:var(--ink-soft);
+    font-size:16px;line-height:1;cursor:pointer;padding:0;
+  }
+  .deep-x:hover{color:var(--rust);}
+  .deep-actions{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;margin-top:14px;flex-wrap:wrap;
+  }
+  .deep-add{
+    background:transparent;
+    border:1.3px solid var(--forest);
+    color:var(--forest);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    padding:7px 14px;border-radius:2px;cursor:pointer;
+  }
+  .deep-add:hover{background:var(--forest);color:var(--paper-card);}
+  .deep-table summary{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--ink-soft);cursor:pointer;
+  }
+  .deep-table table{
+    border-collapse:collapse;margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;font-size:11.5px;
+  }
+  .deep-table th{
+    text-align:left;font-weight:600;color:var(--ink-soft);
+    padding:3px 14px 5px 0;border-bottom:1px solid var(--line);
+    font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  }
+  .deep-table td{padding:3px 14px 3px 0;border-bottom:1px dashed var(--line-soft);}
 </style>
 </head>
 <body>
@@ -815,6 +853,19 @@
           </div>
         </div>
 
+        <div class="price-group deep-group">
+          <h2 class="group-title">Deluxe Deep Root <span class="group-sub">&mdash; per tree, by <b>diameter</b> &middot; $50 up to 10 in, +$3 per 3 in over</span></h2>
+          <div id="deepRootRows"></div>
+          <div class="deep-actions">
+            <button type="button" class="deep-add" id="deepAdd">+ Add another tree</button>
+            <details class="deep-table">
+              <summary>Price steps</summary>
+              <div id="deepTable"></div>
+            </details>
+          </div>
+          <p class="care-text">Enter <b>diameter</b> here &mdash; note this is the one section that is not circumference. Fractions round to the nearest whole inch. One line per tree, since the price is per tree.</p>
+        </div>
+
         <div class="price-group care-group">
           <h2 class="group-title">Tree &amp; Shrub Care <span class="group-sub">— topical insects, spider mites, and similar</span></h2>
           <label class="care-check"><input type="checkbox" id="careCheck"> Customer also needs Tree &amp; Shrub Care</label>
@@ -826,14 +877,14 @@
       <div class="price-summary">
         <h2 class="group-title">Quote summary</h2>
         <div id="summaryLines" class="summary-lines">
-          <div class="empty-state">Enter a circumference above to build the quote.</div>
+          <div class="empty-state">Enter a measurement above to build the quote.</div>
         </div>
         <button class="summary-clear" id="clearPricing">Clear all</button>
       </div>
     </div>
 
     <footer class="note">
-      Stop charges are billed once per visit, not per tree. WIF and WIN are done in the same visit and share one stop charge; WSA and WIM are done separately and each carry their own. This calculator is for internal quoting on wedge trunk injections only.
+      Stop charges are billed once per visit, not per tree. WIF and WIN are done in the same visit and share one stop charge; WSA and WIM are done separately and each carry their own. Deluxe Deep Root is priced per tree rather than per injection and carries no stop charge in this calculator. This calculator is for internal quoting only.
     </footer>
   </div>
 
@@ -1125,9 +1176,81 @@ document.getElementById('resultsBody').addEventListener('input', e=>{
   out.textContent = `${injections} injection${injections===1?'':'s'} × $${rate.toFixed(2)} = $${price.toFixed(2)} (+ $65 stop charge)`;
 });
 
+/* ---- Deluxe Deep Root: flat price per tree, stepped on diameter ---- */
+const DEEP_BASE = 50;   /* 10 in diameter or less */
+const DEEP_CAP  = 10;   /* top of the base tier, in inches of diameter */
+const DEEP_STEP = 3;    /* price goes up every 3 in of diameter */
+const DEEP_ADD  = 3;    /* by $3 each step */
+
+/* Deep root is quoted on diameter, entered directly — unlike the wedge
+   injection rows above, which take circumference. Fractions round to the
+   nearest whole inch because the price table is written in whole inches,
+   so the tiers land cleanly: 10 or under = $50, 11-13 = $53, 14-16 = $56. */
+function deepPrice(dia){
+  const d = Math.round(dia);
+  if(d <= DEEP_CAP) return {price:DEEP_BASE, d, tier:DEEP_CAP + ' in or less'};
+  const steps = Math.ceil((d - DEEP_CAP)/DEEP_STEP);
+  const lo = DEEP_CAP + (steps-1)*DEEP_STEP + 1;
+  const hi = DEEP_CAP + steps*DEEP_STEP;
+  return {price:DEEP_BASE + steps*DEEP_ADD, d, tier:lo + '-' + hi + ' in'};
+}
+
+const deepRowsEl = document.getElementById('deepRootRows');
+
+function renumberDeep(){
+  const rows = deepRowsEl.querySelectorAll('.deep-row');
+  Array.prototype.forEach.call(rows, (row,i)=>{
+    row.querySelector('label').textContent = 'Tree ' + (i+1) + ' \u2014 diameter (in)';
+    row.querySelector('.deep-x').style.visibility = rows.length > 1 ? 'visible' : 'hidden';
+  });
+}
+
+function addDeepRow(){
+  const div = document.createElement('div');
+  div.className = 'price-row deep-row';
+  div.innerHTML = '<label></label>' +
+    '<input type="number" min="0" step="0.5" class="deep-input" placeholder="e.g. 12">' +
+    '<span class="row-result">\u2014</span>' +
+    '<button type="button" class="deep-x" title="Remove this tree">\u00d7</button>';
+  deepRowsEl.appendChild(div);
+  renumberDeep();
+}
+
+deepRowsEl.addEventListener('input', e=>{
+  if(e.target.classList.contains('deep-input')) calcPricing();
+});
+deepRowsEl.addEventListener('click', e=>{
+  const x = e.target.closest('.deep-x');
+  if(!x) return;
+  x.closest('.deep-row').remove();
+  if(!deepRowsEl.querySelector('.deep-row')) addDeepRow();
+  renumberDeep();
+  calcPricing();
+});
+document.getElementById('deepAdd').addEventListener('click', ()=>{ addDeepRow(); });
+
+/* Reference table so a rep can sanity-check a price on the spot. */
+(function(){
+  let rows = '<tr><td>' + DEEP_CAP + ' in or less</td><td>$' +
+             DEEP_BASE.toFixed(2) + '</td></tr>';
+  for(let n=1; n<=8; n++){
+    const lo = DEEP_CAP + (n-1)*DEEP_STEP + 1;
+    const hi = DEEP_CAP + n*DEEP_STEP;
+    rows += '<tr><td>' + lo + '-' + hi + ' in</td><td>$' +
+            (DEEP_BASE + n*DEEP_ADD).toFixed(2) + '</td></tr>';
+  }
+  document.getElementById('deepTable').innerHTML =
+    '<table><thead><tr><th>Diameter</th><th>Per tree</th></tr></thead><tbody>' +
+    rows + '</tbody></table>';
+})();
+
+addDeepRow();
+
 /* ---- Standalone price calculator tab ---- */
 function calcPricing(){
-  const rows = document.querySelectorAll('#view-pricing .price-row');
+  /* Deep root rows live in this tab too but price per tree, not per
+     injection — they're handled separately below, so skip them here. */
+  const rows = document.querySelectorAll('#view-pricing .price-row:not(.deep-row)');
   let subtotal = 0;
   const lines = [];
   const activePrograms = new Set();
@@ -1135,6 +1258,7 @@ function calcPricing(){
   rows.forEach(row=>{
     const input = row.querySelector('.qty-input');
     const result = row.querySelector('.row-result');
+    if(!input || !result) return;
     const circ = parseFloat(input.value);
     if(!circ || circ<=0){ result.textContent = '—'; return; }
     const rate = parseFloat(row.dataset.rate);
@@ -1149,6 +1273,24 @@ function calcPricing(){
     lines.push({label, injections, price});
   });
 
+  /* Deluxe Deep Root — flat per tree, no injection maths, no stop charge */
+  let deepTotal = 0, deepTrees = 0;
+  document.querySelectorAll('#deepRootRows .deep-row').forEach(row=>{
+    const input = row.querySelector('.deep-input');
+    const result = row.querySelector('.row-result');
+    const dia = parseFloat(input.value);
+    if(!dia || dia<=0){ result.textContent = '\u2014'; return; }
+    const p = deepPrice(dia);
+    const rounded = p.d !== dia ? `rounds to ${p.d} in \u00b7 ` : '';
+    result.textContent = `${rounded}${p.tier} \u00b7 $${p.price.toFixed(2)}`;
+    deepTotal += p.price;
+    deepTrees++;
+    subtotal += p.price;
+  });
+  if(deepTrees){
+    lines.push({label:`Deluxe Deep Root (${deepTrees} tree${deepTrees===1?'':'s'})`, injections:null, price:deepTotal});
+  }
+
   let stopTotal = 0;
   const groupNames = [];
   if(activePrograms.has('wif') || activePrograms.has('win')){ groupNames.push('WIF/WIN visit'); stopTotal += 65; }
@@ -1158,9 +1300,9 @@ function calcPricing(){
 
   const summaryEl = document.getElementById('summaryLines');
   if(lines.length===0){
-    summaryEl.innerHTML = '<div class="empty-state">Enter a circumference above to build the quote.</div>';
+    summaryEl.innerHTML = '<div class="empty-state">Enter a measurement above to build the quote.</div>';
   } else {
-    let html = lines.map(l=>`<div class="summary-line"><span>${l.label} (${l.injections})</span><span>$${l.price.toFixed(2)}</span></div>`).join('');
+    let html = lines.map(l=>`<div class="summary-line"><span>${l.label}${l.injections ? ' ('+l.injections+')' : ''}</span><span>$${l.price.toFixed(2)}</span></div>`).join('');
     html += groupNames.map(g=>`<div class="summary-line stop"><span>Stop charge — ${g}</span><span>$65.00</span></div>`).join('');
     html += `<div class="summary-line total"><span>Total</span><span>$${grandTotal.toFixed(2)}</span></div>`;
     summaryEl.innerHTML = html;
@@ -1178,6 +1320,8 @@ document.getElementById('careCheck').addEventListener('change', calcPricing);
 document.getElementById('clearPricing').addEventListener('click', ()=>{
   document.querySelectorAll('#view-pricing .qty-input').forEach(i=>i.value='');
   document.querySelectorAll('#view-pricing .row-result').forEach(r=>r.textContent='—');
+  deepRowsEl.innerHTML = '';
+  addDeepRow();
   document.getElementById('careCheck').checked = false;
   calcPricing();
 });
